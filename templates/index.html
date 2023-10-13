@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>YouTube Transcriber</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">YouTube Transcriber</h1>
+        <form method="POST" id="transcribeForm" class="mt-4">
+            <div class="form-group">
+                <label for="url">YouTube URL:</label>
+                <input type="text" class="form-control" name="url" id="url">
+            </div>
+            <button type="submit" class="btn btn-primary">Transcribe</button>
+        </form>
+        <div id="transcript" class="mt-4"></div>
+    </div>
+    <script>
+        document.getElementById('transcribeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            fetch('/', {
+                method: 'POST',
+                body: new FormData(this)
+            }).then(response => response.json())
+            .then(data => {
+                document.getElementById('transcript').textContent = data.transcript;
+            });
+        });
+    </script>
+</body>
+</html>

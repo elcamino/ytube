@@ -19,31 +19,15 @@ def download_audio(url):
     transcript = transcribe_audio(file_path)
     return transcript
 
+from flask import render_template
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         url = request.form.get('url')
         transcript = download_audio(url)
         return {"transcript": transcript}
-    return '''
-        <form method="POST" id="transcribeForm">
-            YouTube URL: <input type="text" name="url">
-            <input type="submit" value="Transcribe">
-        </form>
-        <div id="transcript"></div>
-        <script>
-            document.getElementById('transcribeForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                fetch('/', {
-                    method: 'POST',
-                    body: new FormData(this)
-                }).then(response => response.json())
-                .then(data => {
-                    document.getElementById('transcript').textContent = data.transcript;
-                });
-            });
-        </script>
-    '''
+    return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
